@@ -1,0 +1,45 @@
+from dataclasses import dataclass
+
+from clients.cover_image_generator_client import CoverImageGeneratorClient
+from clients.playlist_description_generator_client import PlaylistDescriptionGeneratorClient
+import uuid
+
+def image_cover_prompt(tracks: list[str]):
+    # TODO: 2.3 Forbedre denne prompten slik at den genererer et relevant coverbilde basert på låtene i spillelisten
+    return f"""
+        Create an image for the playlist cover. The image should be inspired by the following track names: {', '.join(tracks)}.
+        The image should have a hyperrealistic style. It should show the most random things.
+        Random characters, objects, and landscapes that have no connection to each other.
+        
+
+    """
+
+
+def description_prompt(tracks: list[str]):
+    # TODO: 2.3 Forbedre denne prompten slik at den genererer en relevant beskrivelse basert på låtene i spillelisten
+    return f"""
+        Create a boring and uninspiring playlist description. Make it dull and monotonous.
+        Use generic phrases and avoid any creativity or excitement. The description should be forgettable and bland.
+        Make it sound tedious and unappealing, with no energy or enthusiasm.
+    """
+
+
+class CoverGenerator:
+    def __init__(self):
+        self.image_generation_client = CoverImageGeneratorClient()
+
+    def generate_cover_image(self, track_names: list[str]):
+        prompt = image_cover_prompt(track_names)
+        imageUrl = self.image_generation_client.generate_image(prompt)
+        return imageUrl
+    
+
+
+class DescriptionGenerator:
+    def __init__(self):
+        self.description_generation_client = PlaylistDescriptionGeneratorClient()
+    
+    def generate_description(self, track_names: list[str]):
+        prompt = description_prompt(track_names)
+        description = self.description_generation_client.generate_description(prompt)
+        return description
